@@ -1,0 +1,70 @@
+<html>
+<head>
+  <title>WriteLike</title>
+  <script src="bundle.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+</head>
+<body>
+  <script>
+
+      $( document ).ready(function() {
+
+        $('#createText').click(function() {
+            var text = writelike.author($('#inputText').val(), $('#maxWordCount').val(), 'mainCache');
+            $('#outputText').empty().append('<p>' + text + '</p>');
+        });
+
+        $('#clearText').click(function() {
+          $('#outputText').empty();
+        });
+
+        var bookText = "Mary had a little lamb, little lamb.\nMary had a little lamb.\nHer fleece was white as snow.";
+
+        $('#inputText').val(bookText);
+
+        $('#inputText').onChange(function() {
+          writelike.clearFreqsCache('mainCache');
+        });
+
+      });
+
+  </script>
+  <div class="container">
+    <h1>WriteLike</h1>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h4>About</h4>
+        <div><small>This tool generates a random poem based on the word frequencies of some input text. It splits the input text into bigrams and then based on those bigrams computes the conditional probability that one word follows another word.  Finally, it seeds a new poem with a random word from the input text and then iteratively selects the next word based on the probability that it follows it in the input text.  If there is a zero probability that any word will follow it, then it randomly picks another word from the input text.<small></div>
+      </div>
+    </div>
+
+    <div class="row" style="padding-top: 20px;">
+      <div class="col-sm-6">
+        <div id="outputText" class="jumbotron"></div>
+      </div>
+      <div class="col-sm-6">
+        <form role="form">
+        <div class="form-group">
+          <button type="button" id="createText" class="btn btn-success">Create Poetry</button>
+          <button type="button" id="clearText" class="btn btn-default">Clear</button>
+        </div>
+        <div class="form-group">
+          <label>Max Word Count</label>
+          <input class="form-control" id="maxWordCount" type="number" value="20"  pattern="\d*" />
+        </div>
+        <div class="form-group">
+          <label for="inputText">Input Text</label>
+          <br/>          <small>Copy in your favorite text, perhaps some <a href="http://www.azlyrics.com">music lyrics</a> or from a book found on the <a href="https://www.gutenberg.org/ebooks/search/?sort_order=random">Gutenberg Project</a> website.</small>
+          <textarea class="form-control" id="inputText" rows="10"></textarea>
+        </div>
+      </form>
+      </div>
+    </div>
+
+  </div>
+  </body>
+
+</html>
